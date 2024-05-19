@@ -1,0 +1,28 @@
+function findRedundantConnections(graph):
+  inDegree = array of size graph.size, initialized to 0
+  adjacencyList = adjacency list representation of graph
+  for each node in graph:
+    for each neighbor in adjacencyList[node]:
+      inDegree[neighbor] += 1
+  queue = empty queue
+  for each node in graph:
+    if inDegree[node] == 0:
+      queue.enqueue(node)
+  topoOrder = empty list
+  redundantEdges = empty list
+  while not queue.isEmpty():
+    node = queue.dequeue()
+    topoOrder.append(node)
+    for each neighbor in adjacencyList[node]:
+      inDegree[neighbor] -= 1
+      if inDegree[neighbor] == 0:
+        queue.enqueue(neighbor)
+      elif inDegree[neighbor] < 0:
+        redundantEdges.append((node, neighbor))
+  if length of topoOrder < number of nodes in graph:
+    for each node in graph:
+      if inDegree[node] > 0:
+        for each neighbor in adjacencyList[node]:
+          if inDegree[neighbor] > 0:
+            redundantEdges.append((node, neighbor))
+return redundantEdges
