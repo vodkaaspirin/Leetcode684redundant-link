@@ -1,0 +1,32 @@
+class Solution:
+    def findRedundantConnection(edges):
+        class UnionFind:
+            def __init__(n):
+                initialize parent array
+                initialize rank array
+            
+            def find(x):
+                if x's parent is not x:
+                    update x's parent by recursively calling find
+                return x's parent
+            
+            def union(x, y):
+                root_x = find(x)
+                root_y = find(y)
+                if root_x == root_y:
+                    return False
+                if rank[root_x] < rank[root_y]:
+                    update parent[root_x] to root_y
+                elif rank[root_x] > rank[root_y]:
+                    update parent[root_y] to root_x
+                else:
+                    update parent[root_y] to root_x
+                    increment rank[root_x]
+                return True
+
+        initialize uf with UnionFind(n)
+        initialize redundant_edge to None
+        for each edge in edges:
+            if union(edge[0], edge[1]) returns False:
+                update redundant_edge to current edge
+        return redundant_edge
