@@ -1,0 +1,33 @@
+function findRedundantConnection(edges):
+    graph = defaultdict(list)
+    visited = set()
+    redundant_edge = None
+    
+    # 构建图
+    for edge in edges:
+        u, v = edge
+        graph[u].append(v)
+        graph[v].append(u)
+    
+    # 广度优先搜索函数
+    def bfs(start):
+        nonlocal redundant_edge
+        queue = deque([(start, -1)])  # 初始时将父节点设为-1
+        visited.add(start)
+        
+        while queue:
+            node, parent = queue.popleft()
+            for neighbor in graph[node]:
+                if neighbor not in visited:
+                    visited.add(neighbor)
+                    queue.append((neighbor, node))
+                # 如果邻居节点已经被访问过，且邻居节点不是当前节点的父节点，则说明遇到了环路
+                elif neighbor != parent:
+                    redundant_edge = [node, neighbor]
+    
+    # 从每个节点开始进行广度优先搜索
+    for node in graph:
+        if node not in visited:
+            bfs(node)
+    
+    return redundant_edge
